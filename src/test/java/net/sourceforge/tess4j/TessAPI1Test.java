@@ -89,6 +89,29 @@ public class TessAPI1Test {
         TessAPI1.TessBaseAPIDelete(handle);
     }
 
+    @Test
+    public void testE5() throws Exception {
+        System.out.println("TessBaseAPIRect");
+        String expResult = expOCRResult;
+        String lang = "eng";
+        File tiff = new File(this.testResourcesDataPath, "MWSnap001.jpgtestCode.jpg");
+        BufferedImage image = ImageIO.read(tiff); // require jai-imageio lib to read TIFF
+        ByteBuffer buf = ImageIOHelper.convertImageData(image);
+        int bpp = image.getColorModel().getPixelSize();
+        int bytespp = bpp / 8;
+        int bytespl = (int) Math.ceil(image.getWidth() * bpp / 8.0);
+        TessAPI1.TessBaseAPIInit3(handle, datapath, lang);
+        String result = null;
+        for (int i=0;i<14;i++) {
+            TessAPI1.TessBaseAPISetPageSegMode(handle, i);
+            Pointer utf8Text = TessAPI1.TessBaseAPIRect(handle, buf, bytespp, bytespl, 0, 0, image.getWidth(), image.getHeight());
+            result = utf8Text.getString(0);
+            TessAPI1.TessDeleteText(utf8Text);
+            System.out.println(i);
+            System.out.println(result.trim());
+        }
+        //assertTrue(result.startsWith(expResult));
+    }
     /**
      * Test of TessBaseAPIRect method, of class TessAPI1.
      *

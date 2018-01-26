@@ -45,7 +45,7 @@ Version 1.3 (31 May 2014)
 - Bundle Tesseract and Leptonica 64-bit DLLs
 
 Version 1.4 (18 January 2015)
-- Refactor to reduce code duplication
+- Refactor to reduce e5code duplication
 - Embed Windows native resources in JAR
 - Autoload Windows native libraries
 
