@@ -12,34 +12,34 @@ import java.util.List;
 
 public class BatchOperator {
     private static Tesseract1 instance = new Tesseract1();
-    private static final Rectangle CODE_RECT_RAW = new Rectangle(745, 782, 470, 32);
+    private static final Rectangle CODE_RECT_RAW = new Rectangle(785, 734, 390, 32);
     private static final Rectangle CODE_RECT = new Rectangle(82, 245, 245, 17);
     private static final Rectangle CODE_BPM = new Rectangle(266, 270, 48, 21);
-    private static final Rectangle CODE_BPM_RAW = new Rectangle(1105, 835, 68, 35);
+    private static final Rectangle CODE_BPM_RAW = new Rectangle(1089, 781, 68, 35);
     String output = "C:\\Users\\yinzhennan\\Pictures\\e52\\";
     public static void main(String[] args) throws Exception {
         //1批量截取压缩
-//        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5\\");
-//        System.out.println(fileList.size());
-//        for (String s : fileList) {
-//            cutImages(s);
-//        }
-        //2,获取歌曲信息
-        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5img");
+        List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
         System.out.println(fileList.size());
-        List<Song> songList = new ArrayList<>(fileList.size());
-        int i=0;
-        for (String file : fileList) {
-            Song song = getInfo(file);
-            songList.add(song);
-            System.out.println(i++);
-            System.out.println(JSON.toJSONString(song));
+        for (String s : fileList) {
+            cutImages(s);
         }
-        System.out.println(JSON.toJSONString(songList));
+        //2,获取歌曲信息
+//        List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
+//        System.out.println(fileList.size());
+//        List<Song> songList = new ArrayList<>(fileList.size());
+//        int i=0;
+//        for (String file : fileList) {
+//            Song song = getInfo(file);
+//            songList.add(song);
+//            System.out.println(i++);
+//            System.out.println(JSON.toJSONString(song));
+//        }
+//        System.out.println(JSON.toJSONString(songList));
 
         //////
 //
-//        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5img");
+//        List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
 //        System.out.println(fileList.size());
 //        for (String s : fileList) {
 //            getImg(s);
@@ -49,11 +49,11 @@ public class BatchOperator {
     private static void getImg(String srcPath){
         OperateImage imageObj = new OperateImage();
         String fileName = srcPath.substring(srcPath.lastIndexOf("\\"));
-        String toPath = "C:\\Users\\yinzhennan\\Pictures\\e51\\"+fileName+"testCode.jpg";
+        String toPath = "D:\\Users\\Pictures\\e51\\"+fileName+"testCode.jpg";
         String writeImageFormat = "jpg";
         try {
-            BufferedImage tag = imageObj.readBufferedImage(srcPath, CODE_RECT);
-
+            BufferedImage tag = imageObj.readBufferedImage(srcPath, CODE_RECT_RAW);
+            handle(tag);
             //保存新图片
             ImageIO.write(tag, writeImageFormat, new File(toPath));
         } catch (IOException e) {
@@ -86,12 +86,12 @@ public class BatchOperator {
         song.setCode(fileName);
         BufferedImage image = ImageIO.read(file); // require jai-imageio lib to read TIFF
         //获取code
-        BufferedImage codeBI = imageObj.readBufferedImage(srcPath, CODE_RECT);
+        BufferedImage codeBI = imageObj.readBufferedImage(srcPath, CODE_RECT_RAW);
         handle(codeBI);
         String code = OCRUtil.getString(codeBI,"eng").trim();
         song.setE5code(code);
         //获取bpm
-        BufferedImage codeBpm = imageObj.readBufferedImage(srcPath, CODE_BPM);
+        BufferedImage codeBpm = imageObj.readBufferedImage(srcPath, CODE_BPM_RAW);
         handle(codeBpm);
         String bpm = OCRUtil.getString(codeBpm,"eng").trim();
         song.setBpm(bpm);
@@ -100,12 +100,12 @@ public class BatchOperator {
 
     private static void cutImages(String srcPath){
         OperateImage imageObj = new OperateImage();
-        String fileName = srcPath.substring(srcPath.lastIndexOf("MWSnap")+6);
-        String toPath = "C:\\Users\\yinzhennan\\Pictures\\e52\\21_"+fileName;
-        int x = 567;
-        int y = 291;
-        int width = 1402-x;
-        int height = 913-y ;
+        String fileName = srcPath.substring(srcPath.lastIndexOf("\\"));
+        String toPath = "D:\\Users\\Pictures\\e51\\"+fileName;
+        int x = 606;
+        int y = 273;
+        int width = 753;//1402-x;
+        int height = 585;//913-y ;
         String readImageFormat = "jpg";
         String writeImageFormat = "jpg";
         try {
