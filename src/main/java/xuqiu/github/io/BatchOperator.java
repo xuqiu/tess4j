@@ -25,7 +25,7 @@ public class BatchOperator {
 //            cutImages(s);
 //        }
         //2,获取歌曲信息
-        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5\\");
+        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5img");
         System.out.println(fileList.size());
         List<Song> songList = new ArrayList<>(fileList.size());
         int i=0;
@@ -38,8 +38,8 @@ public class BatchOperator {
         System.out.println(JSON.toJSONString(songList));
 
         //////
-
-//        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5\\");
+//
+//        List<String> fileList = getFileList("C:\\Users\\yinzhennan\\Pictures\\e5img");
 //        System.out.println(fileList.size());
 //        for (String s : fileList) {
 //            getImg(s);
@@ -49,14 +49,32 @@ public class BatchOperator {
     private static void getImg(String srcPath){
         OperateImage imageObj = new OperateImage();
         String fileName = srcPath.substring(srcPath.lastIndexOf("\\"));
-        String toPath = "C:\\Users\\yinzhennan\\Pictures\\e55\\"+fileName+"testCode.jpg";
+        String toPath = "C:\\Users\\yinzhennan\\Pictures\\e51\\"+fileName+"testCode.jpg";
         String writeImageFormat = "jpg";
         try {
-            BufferedImage tag = imageObj.readBufferedImage(srcPath, CODE_RECT_RAW);
+            BufferedImage tag = imageObj.readBufferedImage(srcPath, CODE_RECT);
+
             //保存新图片
             ImageIO.write(tag, writeImageFormat, new File(toPath));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private static void handle(BufferedImage tag){
+        int tense = 150;
+        for(int x = 0;x<tag.getWidth();x++){
+            for(int y = 0;y<tag.getHeight();y++){
+                int rgb = tag.getRGB(x, y);
+                int R =(rgb & 0xff0000 ) >> 16 ;
+                int G= (rgb & 0xff00 ) >> 8 ;
+                int B= (rgb & 0xff );
+                if(R>tense&&G>tense&&B>tense){
+                    tag.setRGB(x,y,0);
+                }else{
+                    rgb = (0XFF*256 + 0XFF)*256+0XFF - 16777216;
+                    tag.setRGB(x,y,rgb);
+                }
+            }
         }
     }
 
@@ -68,11 +86,13 @@ public class BatchOperator {
         song.setCode(fileName);
         BufferedImage image = ImageIO.read(file); // require jai-imageio lib to read TIFF
         //获取code
-        BufferedImage codeBI = imageObj.readBufferedImage(srcPath, CODE_RECT_RAW);
+        BufferedImage codeBI = imageObj.readBufferedImage(srcPath, CODE_RECT);
+        handle(codeBI);
         String code = OCRUtil.getString(codeBI,"eng").trim();
         song.setE5code(code);
         //获取bpm
-        BufferedImage codeBpm = imageObj.readBufferedImage(srcPath, CODE_BPM_RAW);
+        BufferedImage codeBpm = imageObj.readBufferedImage(srcPath, CODE_BPM);
+        handle(codeBpm);
         String bpm = OCRUtil.getString(codeBpm,"eng").trim();
         song.setBpm(bpm);
         return song;
