@@ -89,7 +89,7 @@ public class OperateImage {
     }
 
     public void cropAndReduceImage(String srcPath,String toPath,
-                          int x,int y,int width,int height,int ratio,
+                                   Rectangle rectangle,int ratio,
                           String readImageFormat,String writeImageFormat) throws IOException{
         FileInputStream fis = null ;
         ImageInputStream iis =null ;
@@ -103,15 +103,15 @@ public class OperateImage {
             reader.setInput(iis,true) ;
             ImageReadParam param = reader.getDefaultReadParam();
             //定义一个矩形
-            Rectangle rect = new Rectangle(x, y, width, height);
+            Rectangle rect = new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
             //提供一个 BufferedImage，将其用作解码像素数据的目标。
             param.setSourceRegion(rect);
             BufferedImage src = reader.read(0,param);
 
             // 缩小边长
-            BufferedImage tag = new BufferedImage(width / ratio, height / ratio, BufferedImage.TYPE_INT_RGB);
+            BufferedImage tag = new BufferedImage(rectangle.width / ratio, rectangle.height / ratio, BufferedImage.TYPE_INT_RGB);
             // 绘制 缩小  后的图片
-            tag.getGraphics().drawImage(src, 0, 0, width / ratio, height / ratio, null);
+            tag.getGraphics().drawImage(src, 0, 0, rectangle.width / ratio, rectangle.height / ratio, null);
             //保存新图片
             ImageIO.write(tag, writeImageFormat, new File(toPath));
         }finally{

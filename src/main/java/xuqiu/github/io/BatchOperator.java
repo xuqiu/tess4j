@@ -12,10 +12,17 @@ import java.util.List;
 
 public class BatchOperator {
     private static Tesseract1 instance = new Tesseract1();
-    private static final Rectangle CODE_RECT_RAW = new Rectangle(785, 734, 390, 32);
-    private static final Rectangle CODE_RECT = new Rectangle(82, 245, 245, 17);
-    private static final Rectangle CODE_BPM = new Rectangle(266, 270, 48, 21);
-    private static final Rectangle CODE_BPM_RAW = new Rectangle(1089, 781, 68, 35);
+    //youku视频位置
+    //private static final Rectangle CODE_RECT_RAW = new Rectangle(785, 734, 390, 32);
+    //private static final Rectangle CODE_BPM_RAW = new Rectangle(1089, 781, 68, 35);
+    //private static final Rectangle CUT_PIC_RAW = new Rectangle(606, 273, 753, 585);
+    //B站
+    private static final Rectangle CODE_RECT_RAW = new Rectangle(759, 777, 441, 42);
+    private static final Rectangle CODE_BPM_RAW = new Rectangle(1102, 834, 76, 35);
+    private static final Rectangle CUT_PIC_RAW = new Rectangle(567, 298, 833, 626);
+//    private static final Rectangle CODE_RECT = new Rectangle(82, 245, 245, 17);
+//    private static final Rectangle CODE_BPM = new Rectangle(266, 270, 48, 21);
+
     String output = "C:\\Users\\yinzhennan\\Pictures\\e52\\";
     public static void main(String[] args) throws Exception {
         //1批量截取压缩
@@ -102,14 +109,11 @@ public class BatchOperator {
         OperateImage imageObj = new OperateImage();
         String fileName = srcPath.substring(srcPath.lastIndexOf("\\"));
         String toPath = "D:\\Users\\Pictures\\e51\\"+fileName;
-        int x = 606;
-        int y = 273;
-        int width = 753;//1402-x;
-        int height = 585;//913-y ;
+
         String readImageFormat = "jpg";
         String writeImageFormat = "jpg";
         try {
-            imageObj.cropAndReduceImage(srcPath, toPath, x, y, width, height,2,readImageFormat,writeImageFormat);//剪切图片
+            imageObj.cropAndReduceImage(srcPath, toPath, CUT_PIC_RAW,2,readImageFormat,writeImageFormat);//剪切图片
         } catch (IOException e) {
             e.printStackTrace();
         }
