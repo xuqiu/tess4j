@@ -4,6 +4,7 @@ public class Song {
     private String e5_code;
     private String code;
     private String bpm;
+    private Integer type;
 
     public String getE5_code() {
         return e5_code;
@@ -27,5 +28,13 @@ public class Song {
 
     public void setBpm(String bpm) {
         this.bpm = bpm;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

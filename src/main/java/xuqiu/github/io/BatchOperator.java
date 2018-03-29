@@ -24,6 +24,7 @@ public class BatchOperator {
 //    private static final Rectangle CODE_BPM = new Rectangle(266, 270, 48, 21);
 
     private static final String OUTPUT = "D:\\Users\\Pictures\\e51\\";
+    private static int SONG_TYPE;
     public static void main(String[] args) throws Exception {
         //1批量截取压缩
         List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
@@ -33,6 +34,8 @@ public class BatchOperator {
 //        }
         //2,获取歌曲信息
         //List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
+        //TODO 注意修改类型
+        SONG_TYPE=13;
         System.out.println(fileList.size());
         List<Song> songList = new ArrayList<>(fileList.size());
         int i=0;
@@ -102,6 +105,7 @@ public class BatchOperator {
         handle(codeBpm);
         String bpm = OCRUtil.getString(codeBpm,"eng").trim();
         song.setBpm(bpm);
+        song.setType(SONG_TYPE);
         return song;
     }
 
