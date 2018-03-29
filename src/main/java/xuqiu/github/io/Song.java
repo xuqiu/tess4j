@@ -1,16 +1,16 @@
 package xuqiu.github.io;
 
 public class Song {
-    private String e5code;
+    private String e5_code;
     private String code;
     private String bpm;
 
-    public String getE5code() {
-        return e5code;
+    public String getE5_code() {
+        return e5_code;
     }
 
-    public void setE5code(String e5code) {
-        this.e5code = e5code;
+    public void setE5_code(String e5_code) {
+        this.e5_code = e5_code;
     }
 
     public String getCode() {

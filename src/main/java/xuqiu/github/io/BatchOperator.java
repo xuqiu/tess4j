@@ -23,26 +23,26 @@ public class BatchOperator {
 //    private static final Rectangle CODE_RECT = new Rectangle(82, 245, 245, 17);
 //    private static final Rectangle CODE_BPM = new Rectangle(266, 270, 48, 21);
 
-    String output = "C:\\Users\\yinzhennan\\Pictures\\e52\\";
+    private static final String OUTPUT = "D:\\Users\\Pictures\\e51\\";
     public static void main(String[] args) throws Exception {
         //1批量截取压缩
         List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
-        System.out.println(fileList.size());
-        for (String s : fileList) {
-            cutImages(s);
-        }
-        //2,获取歌曲信息
-//        List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
 //        System.out.println(fileList.size());
-//        List<Song> songList = new ArrayList<>(fileList.size());
-//        int i=0;
-//        for (String file : fileList) {
-//            Song song = getInfo(file);
-//            songList.add(song);
-//            System.out.println(i++);
-//            System.out.println(JSON.toJSONString(song));
+//        for (String s : fileList) {
+//            cutImages(s);
 //        }
-//        System.out.println(JSON.toJSONString(songList));
+        //2,获取歌曲信息
+        //List<String> fileList = getFileList("D:\\Users\\Pictures\\e5");
+        System.out.println(fileList.size());
+        List<Song> songList = new ArrayList<>(fileList.size());
+        int i=0;
+        for (String file : fileList) {
+            Song song = getInfo(file);
+            songList.add(song);
+            System.out.println(i++);
+            System.out.println(JSON.toJSONString(song));
+        }
+        System.out.println(JSON.toJSONString(songList));
 
         //////
 //
@@ -88,15 +88,15 @@ public class BatchOperator {
     private static Song getInfo(String srcPath) throws Exception {
         OperateImage imageObj = new OperateImage();
         Song song = new Song();
-        File file = new File(srcPath);
+        //File file = new File(srcPath);
         String fileName = srcPath.substring(srcPath.lastIndexOf("\\")+1);
-        song.setCode(fileName);
-        BufferedImage image = ImageIO.read(file); // require jai-imageio lib to read TIFF
+        song.setCode(fileName.split("\\.")[0]);
+        //BufferedImage image = ImageIO.read(file); // require jai-imageio lib to read TIFF
         //获取code
         BufferedImage codeBI = imageObj.readBufferedImage(srcPath, CODE_RECT_RAW);
         handle(codeBI);
         String code = OCRUtil.getString(codeBI,"eng").trim();
-        song.setE5code(code);
+        song.setE5_code(code);
         //获取bpm
         BufferedImage codeBpm = imageObj.readBufferedImage(srcPath, CODE_BPM_RAW);
         handle(codeBpm);
@@ -108,7 +108,7 @@ public class BatchOperator {
     private static void cutImages(String srcPath){
         OperateImage imageObj = new OperateImage();
         String fileName = srcPath.substring(srcPath.lastIndexOf("\\"));
-        String toPath = "D:\\Users\\Pictures\\e51\\"+fileName;
+        String toPath = OUTPUT +fileName;
 
         String readImageFormat = "jpg";
         String writeImageFormat = "jpg";
